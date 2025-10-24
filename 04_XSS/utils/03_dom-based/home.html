@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example of DOM-Based XSS</title>
+  </head>
+  <body>
+    <h1> Vulnerable</h1>
+    <h3><pre>dom_vulnerable.html file content</pre></h3>
+    <pre id="dom_vulnerable"></pre>
+    <script>
+      // Load the raw content of dom.html
+      fetch('dom_vulnerable.html')
+        .then(response => response.text())
+        .then(text => {
+          document.getElementById('dom_vulnerable').textContent = text;
+        })
+        .catch(err => {
+          document.getElementById('dom_vulnerable').textContent = 'Loading error: ' + err;
+        });
+    </script>
+    <h3> Link to the file</h3>
+    <ul>
+      <li><a href="dom_vulnerable.html#Alice" target="_blank">dom_vulnerable.html#Alice</a></li>
+      <li><a href="dom_vulnerable.html#%3Cimg%20src=x%20onerror=%22alert(%27bomb%27)%22%3E" target="_blank">dom_vulnerable.html#%3Cimg%20src=x%20onerror=%22alert(%27bomb%27)%22%3E</a></li>
+    </ul>
+    <h1> Secure</h1>
+    <h3><pre>dom_secure.html file content</pre></h3>
+    <pre id="dom"></pre>
+
+    <script>
+      // Load the raw content of dom_secure.html
+      fetch('dom.html')
+        .then(response => response.text())
+        .then(text => {
+          document.getElementById('dom').textContent = text;
+        })
+        .catch(err => {
+          document.getElementById('dom').textContent = 'Loading error: ' + err;
+        });
+    </script>
+    <h3> Link to the file</h3>
+    <ul>
+      <li><a href="dom.html#Alice" target="_blank">dom.html#Alice</a></li>
+      <li><a href="dom.html#%3Cimg%20src=x%20onerror=%22alert(%27bomb%27)%22%3E" target="_blank">dom.html#%3Cimg%20src=x%20onerror=%22alert(%27bomb%27)%22%3E</a></li>
+    </ul>
+  </body>
+</html>
+

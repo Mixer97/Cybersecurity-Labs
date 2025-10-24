@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Malicious Page</title>
+  </head>
+  <body>
+    <h2>iframe with content from legitimate</h2>
+    <div id="output" style="border:1px solid red; padding:10px;">
+      <iframe id="f" src="http://localhost:8001/legitimate.html" width="600" height="200" style="border:1px solid black;"></iframe>
+    </div>
+    <h2>JavaScript attempt to read content from the iframe</h2>
+    <pre id="out"></pre> <!-- tag for preformatted text (e.g., monospace) -->
+    <script>
+      const f = document.getElementById('f');
+      const out = document.getElementById('out');
+      f.addEventListener('load', () => { // JS waits until content is loaded in iframe
+        const doc = f.contentDocument; // read the content within iframe
+        if (!doc) { out.textContent = 'contentDocument === null'; return; } //if sop is active, it will be null
+        out.textContent = doc.documentElement.outerHTML; //otherwise, extract HTML from iframe and put in <pre>
+      });
+    </script>
+  </body>
+</html>

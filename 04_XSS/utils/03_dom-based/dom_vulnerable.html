@@ -1,0 +1,14 @@
+<html>
+  <script> //J-WA
+    function greetUser() {
+      // Source: URL fragment
+      const raw = window.location.hash.substring(1);
+      const name = decodeURIComponent(raw) || 'Guest';
+      // Sink: innerHTML -- untrusted input is parsed as control code (HTML/JS)
+      document.getElementById("welcome").innerHTML = "Hello " + name;
+    }
+  </script>
+  <body onload="greetUser()">
+    <div id="welcome"></div>
+  </body>
+</html>
